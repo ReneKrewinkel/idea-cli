@@ -55,7 +55,6 @@ async fn main()  {
 
     // Generate prompts
     let prompt = format!("summarise '{}'", &input_string);
-    let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
 
     // Date & File name
     let date_string = get_date();
@@ -65,8 +64,11 @@ async fn main()  {
     let completion = run_completion(&prompt, &cfg).await;
 
     let search_criteria: String = if cfg.use_ollama == "YES" {
+        let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
         run_completion(&search_prompt, &cfg).await
     } else {
+        // Some weirdness when running openai with return characters (see #9)
+        // work around: just use the input string
         input_string.clone()
     };
 
