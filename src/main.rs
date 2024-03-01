@@ -63,6 +63,12 @@ async fn main()  {
     // Execute completion
     let completion = run_completion(&prompt, &cfg).await;
 
+    let model= if cfg.use_ollama == "YES" {
+        cfg.ollama_model.clone()
+    } else {
+        cfg.openai_model.clone()
+    };
+
     let search_criteria: String = if cfg.use_ollama == "YES" {
         let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
         run_completion(&search_prompt, &cfg).await
@@ -74,7 +80,7 @@ async fn main()  {
 
     let videos = search::search_videos(search_criteria.clone()).await;
 
-    let _result = create::create_note(&file_name, &input_string, &date_string, &completion, &search_criteria, &videos);
+    let _result = create::create_note(&file_name, &input_string,&model, &date_string, &completion, &search_criteria, &videos);
 
 
 }

@@ -2,15 +2,16 @@ use std::fs::File;
 use std::io::Write;
 use inflector::Inflector;
 
-fn create_front_matter(input_string: &String, date_string: &String,) -> String {
+fn create_front_matter(input_string: &String, model: &String, date_string: &String,) -> String {
     let front_matter = format!("---
 title: {}
 tags:
 - idea
 - inbox
-Handled: false
-Created: {}
----\n\n", &input_string.to_sentence_case(), &date_string);
+handled: false
+model: {}
+created: {}
+---\n\n", &input_string.to_sentence_case(), &model, &date_string);
 
     front_matter.to_string()
 }
@@ -59,12 +60,13 @@ fn write_note (file_name: &String, content: &String) -> bool {
 }
 pub fn create_note(file_name: &String,
                    input_string: &String,
+                   model: &String,
                    date_string: &String,
                    completion: &String,
                    search_criteria: &String,
                    videos: &Vec<String>) -> bool {
 
-    let front_matter = create_front_matter(&input_string, &date_string);
+    let front_matter = create_front_matter(&input_string, &model, &date_string);
     let content = create_content(&input_string, &completion, &search_criteria, &videos);
     let note = format!("{} {}", &front_matter, &content);
 
