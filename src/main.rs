@@ -17,7 +17,8 @@ mod env;
 mod ollama;
 use ollama::completion::ollama_completion;
 
-use env::config::{ Config, read_config };
+use env::config::*;
+use crate::env::model::Config;
 
 fn get_date() -> String {
     let d = SystemTime::now();
@@ -54,9 +55,7 @@ async fn main()  {
 
     // Generate prompts
     let prompt = format!("summarise '{}'", &input_string);
-    //let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
-    //let search_prompt = format!("strip the words from this sentence '{}' which are not nouns or verbs, return a maximum of 5 words the most important first, do not use bullet points or separators", &input_string);
-    let search_criteria = format!("{}", &input_string.clone());
+    let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
 
     // Date & File name
     let date_string = get_date();
@@ -65,7 +64,11 @@ async fn main()  {
     // Execute completion
     let completion = run_completion(&prompt, &cfg).await;
 
-    //let search_criteria = completion::openai_completion(&search_prompt, &cfg).await;
+    let search_criteria: String = if cfg.use_ollama == "YES" {
+        run_completion(&search_prompt, &cfg).await
+    } else {
+        input_string.clone()
+    };
 
     let videos = search::search_videos(search_criteria.clone()).await;
 
