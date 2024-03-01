@@ -29,14 +29,30 @@ fn get_date() -> String {
 
 async fn run_completion(prompt: &String, cfg: &Config) -> String {
 
-    let completion: String;
     if &cfg.use_ollama == "YES" {
-        completion = ollama_completion(&prompt, &cfg).await;
+        ollama_completion(&prompt, &cfg).await
     } else {
-        completion = openai_completion(&prompt, &cfg).await;
+        openai_completion(&prompt, &cfg).await
     }
+}
 
-    completion
+async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
+     if cfg.use_ollama == "YES" {
+        let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input);
+        run_completion(&search_prompt, &cfg).await
+    } else {
+        // Some weirdness when running openai with return characters (see #9)
+        // work around: just use the input string
+        input.clone()
+    }
+}
+
+fn extract_model(cfg: &Config) -> String {
+    if cfg.use_ollama == "YES" {
+        cfg.ollama_model.clone()
+    } else {
+        cfg.openai_model.clone()
+    }
 }
 
 #[tokio::main]
@@ -44,7 +60,6 @@ async fn main()  {
 
     let cfg = read_config();
     let args: Vec<String> = std::env::args().collect();
-
 
     if args.len() != 2 {
         println!("Usage: {} <string>", args[0]);
@@ -63,24 +78,13 @@ async fn main()  {
     // Execute completion
     let completion = run_completion(&prompt, &cfg).await;
 
-    let model= if cfg.use_ollama == "YES" {
-        cfg.ollama_model.clone()
-    } else {
-        cfg.openai_model.clone()
-    };
-
-    let search_criteria: String = if cfg.use_ollama == "YES" {
-        let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input_string);
-        run_completion(&search_prompt, &cfg).await
-    } else {
-        // Some weirdness when running openai with return characters (see #9)
-        // work around: just use the input string
-        input_string.clone()
-    };
-
+    // Search Videos
+    let search_criteria= create_search_criteria(&input_string, &cfg).await;
     let videos = search::search_videos(search_criteria.clone()).await;
 
-    let _result = create::create_note(&file_name, &input_string,&model, &date_string, &completion, &search_criteria, &videos);
+    let model= extract_model(&cfg);
 
+    // Okay... this needs to be a struct! -> pass in the config
+    let _result = create::create_note(&file_name, &input_string, &model, &date_string, &completion, &search_criteria, &videos);
 
 }
