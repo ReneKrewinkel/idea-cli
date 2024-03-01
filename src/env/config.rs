@@ -17,12 +17,16 @@ pub fn read_config() -> Config {
     let openai_token = std::env::var("OPENAI_TOKEN").expect("OPENAI_TOKEN must be set.");
     let openai_url = std::env::var("OPENAI_URL").expect("OPENAI_URL must be set.");
     let openai_model =  std::env::var("OPENAI_MODEL").expect("OPENAI_MODEL must be set.");
+    let ollama_model = std::env::var("OLLAMA_MODEL").expect("OLLAMA_MODEL must be set.");
+    let use_ollama = std::env::var("USE_OLLAMA").expect("USE_OLLAMA must be set to YES or NO");
     let youtube_token = std::env::var("YOUTUBE_TOKEN").expect("YOUTUBE_TOKEN must be set.");
 
     Config::new(vault_path.clone(),
                 openai_token.clone(),
                 openai_url.clone(),
                 openai_model.clone(),
+                use_ollama.clone(),
+                ollama_model.clone(),
                 youtube_token.clone(),
     )
 
