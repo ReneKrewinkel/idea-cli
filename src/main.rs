@@ -1,10 +1,11 @@
-use std;
-
 extern crate chrono;
 use inflector::cases::sentencecase::to_sentence_case;
 
 mod openai;
 use openai::completion::openai_completion;
+mod ollama;
+use ollama::completion::ollama_completion;
+
 mod youtube;
 use youtube::search;
 
@@ -13,8 +14,6 @@ use note::create;
 //use note::model::Note;
 use crate::note::model::Note;
 mod env;
-mod ollama;
-use ollama::completion::ollama_completion;
 
 use env::config::*;
 use crate::env::model::Config;
@@ -59,23 +58,12 @@ async fn main()  {
     }
 
     let input_string = &args[1];
-
-    // Generate prompts
     let prompt = format!("summarise '{}'", &input_string);
-
-    // File name
     let file_name = format!("{}/{}.md", cfg.vault_path, to_sentence_case(input_string));
-
-    // Execute completion
     let completion = run_completion(&prompt, &cfg).await;
-
-    // Search Videos
     let search_criteria= create_search_criteria(input_string, &cfg).await;
     let videos = search::search_videos(search_criteria.clone()).await;
-
     let model= extract_model(&cfg);
-
-    // Create the note
     let n = Note::new(file_name, input_string.clone(), model, completion, search_criteria, videos);
     let _result = create::create_note(&n);
 
