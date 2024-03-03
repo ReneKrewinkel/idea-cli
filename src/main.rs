@@ -74,7 +74,7 @@ async fn main()  {
     let videos = search::search_videos(search_criteria.clone()).await;
 
     let model= extract_model(&cfg);
-    
+
     let n = Note::new(file_name, input_string.clone(), model, completion, search_criteria, videos);
     let _result = create::create_note(&n);
 

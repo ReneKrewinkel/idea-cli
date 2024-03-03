@@ -24,7 +24,7 @@ pub fn read_config() -> Config {
                 openai_token.clone(),
                 openai_url.clone(),
                 openai_model.clone(),
-                use_ollama.clone(),
+                use_ollama.to_uppercase().clone(),
                 ollama_model.clone(),
                 youtube_token.clone(),
     )
