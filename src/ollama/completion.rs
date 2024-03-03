@@ -21,7 +21,7 @@ pub async fn ollama_completion(prompt: &String, cfg: &Config) -> String {
         .await;
 
     if let Ok(res) = res {
-        return format!("{}", res.response);
+        return res.response.to_string();
     }
 
     "".to_string()

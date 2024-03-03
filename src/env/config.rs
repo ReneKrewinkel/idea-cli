@@ -4,7 +4,6 @@ use dotenv::{ dotenv };
 // use std::{ format };
 use super::model::Config;
 
-#[warn(dead_code)]
 pub fn read_config() -> Config {
 
    // let binding = get_my_home().unwrap().expect("Homedir missing").to_path_buf();

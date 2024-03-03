@@ -1,6 +1,16 @@
 use std::fs::File;
 use std::io::Write;
+use std::time::SystemTime;
+use chrono::{DateTime, Utc};
 use inflector::Inflector;
+
+fn get_date() -> String {
+    let d = SystemTime::now();
+    let datetime = DateTime::<Utc>::from(d);
+    let timestamp_str = datetime.format("%Y-%m-%d").to_string();
+    timestamp_str
+}
+
 
 fn create_front_matter(input_string: &String, model: &String, date_string: &String,) -> String {
     let front_matter = format!("---
@@ -30,7 +40,7 @@ fn create_video_embedding( url: &String) -> String {
 
 fn create_content(input_string: &String,
                   completion: &String, search_criteria: &String,
-                  videos: &Vec<String>) -> String {
+                  videos: &[String]) -> String {
 
     let txt_content = format!("### {}\n{}", &input_string.to_sentence_case(), &completion);
     let mut video_content = "".to_string();
@@ -51,25 +61,22 @@ fn write_note (file_name: &String, content: &String) -> bool {
         Ok(file) => file
     };
 
-    match file.write_all(content.as_bytes()) {
-        Err(why) => panic!("Cannot write to file: {}", why),
-        Ok(_) => {}
-    };
+    if let Err(why) = file.write_all(content.as_bytes()) { panic!("Cannot write to file: {}", why) };
 
     true
 }
 pub fn create_note(file_name: &String,
                    input_string: &String,
                    model: &String,
-                   date_string: &String,
                    completion: &String,
                    search_criteria: &String,
-                   videos: &Vec<String>) -> bool {
+                   videos: &[String]) -> bool {
 
-    let front_matter = create_front_matter(&input_string, &model, &date_string);
-    let content = create_content(&input_string, &completion, &search_criteria, &videos);
+    let date_string = get_date();
+    let front_matter = create_front_matter(input_string, model, &date_string);
+    let content = create_content(input_string, completion, search_criteria, videos);
     let note = format!("{} {}", &front_matter, &content);
 
-    write_note(&file_name, &note)
+    write_note(file_name, &note)
 
 }

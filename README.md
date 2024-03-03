@@ -34,7 +34,7 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 - [x] ~~[fix the `unwrap` in the completion](https://github.com/ReneKrewinkel/idea-cli/issues/8)~~
 - [ ] [Strange behaviour in the return of the completion. somehow the string isn't trimmed properly returns a `\\u0000-\\u00fn`](https://github.com/ReneKrewinkel/idea-cli/issues/9)
 - [ ] **Idea:** Spawn a thread to run it in the background?
-- [ ] ***Optimize code!!!!!***
+- [ ] [***Optimize code!!!!!***](https://github.com/ReneKrewinkel/idea-cli/issues/10)
 
 ## Build
 #### MacOS
