@@ -10,6 +10,8 @@ use youtube::search;
 
 mod note;
 use note::create;
+//use note::model::Note;
+use crate::note::model::Note;
 mod env;
 mod ollama;
 use ollama::completion::ollama_completion;
@@ -72,8 +74,8 @@ async fn main()  {
     let videos = search::search_videos(search_criteria.clone()).await;
 
     let model= extract_model(&cfg);
-
-    // Okay... this needs to be a struct! -> pass in the config
-    let _result = create::create_note(&file_name, input_string, &model, &completion, &search_criteria, &videos);
+    
+    let n = Note::new(file_name, input_string.clone(), model, completion, search_criteria, videos);
+    let _result = create::create_note(&n);
 
 }

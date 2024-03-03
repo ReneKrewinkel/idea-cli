@@ -3,6 +3,7 @@ use std::io::Write;
 use std::time::SystemTime;
 use chrono::{DateTime, Utc};
 use inflector::Inflector;
+use crate::note::model::Note;
 
 fn get_date() -> String {
     let d = SystemTime::now();
@@ -65,12 +66,9 @@ fn write_note (file_name: &String, content: &String) -> bool {
 
     true
 }
-pub fn create_note(file_name: &String,
-                   input_string: &String,
-                   model: &String,
-                   completion: &String,
-                   search_criteria: &String,
-                   videos: &[String]) -> bool {
+pub fn create_note(note: &Note) -> bool {
+
+    let Note { file_name, input_string, model, completion, search_criteria, videos } = &note;
 
     let date_string = get_date();
     let front_matter = create_front_matter(input_string, model, &date_string);
