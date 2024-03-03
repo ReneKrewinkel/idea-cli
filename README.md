@@ -25,7 +25,7 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 
 ## TO DO
 - [x] ~~[Better error handling](https://github.com/ReneKrewinkel/idea-cli/issues/1).~~
-- [ ] [Check if there are video's if not, don't generate the content](https://github.com/ReneKrewinkel/idea-cli/issues/2)
+- [x] ~~[Check if there are video's if not, don't generate the content](https://github.com/ReneKrewinkel/idea-cli/issues/2)~~
 - [ ] [Use Official youtube library: google-youtube3](https://github.com/ReneKrewinkel/idea-cli/issues/3)
 - [ ] [Integrate in NeoVim (NeoVim plugin!)](https://github.com/ReneKrewinkel/idea-cli/issues/4)
 - [ ] [Generic config file in](https://github.com/ReneKrewinkel/idea-cli/issues/5) `${HOME}/.config/idea-cli/settings.json`
