@@ -64,7 +64,7 @@ async fn main()  {
     let prompt = format!("summarise '{}'", &input_string);
 
     // File name
-    let file_name = format!("{}/{}.md", cfg.vault_path, to_sentence_case(&input_string));
+    let file_name = format!("{}/{}.md", cfg.vault_path, to_sentence_case(input_string));
 
     // Execute completion
     let completion = run_completion(&prompt, &cfg).await;
@@ -75,6 +75,7 @@ async fn main()  {
 
     let model= extract_model(&cfg);
 
+    // Create the note
     let n = Note::new(file_name, input_string.clone(), model, completion, search_criteria, videos);
     let _result = create::create_note(&n);
 
