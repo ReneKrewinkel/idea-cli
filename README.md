@@ -36,6 +36,7 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 - [ ] **Idea:** Spawn a thread to run it in the background?
 - [x] ~~[***Optimize code!!!!!***](https://github.com/ReneKrewinkel/idea-cli/issues/10)~~
 - [x] ~~[Make sure not to overwrite a file](https://github.com/ReneKrewinkel/idea-cli/issues/11)~~
+- [x] ~~[Add tags based upon input](https://github.com/ReneKrewinkel/idea-cli/issues/12)~~
  
 ## Build
 #### MacOS
