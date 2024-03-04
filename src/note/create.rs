@@ -5,17 +5,18 @@ use crate::note::model::Note;
 
 use crate::env::config::get_date;
 
-fn create_front_matter(input_string: &String, model: &String, date_string: &String,) -> String {
+fn create_front_matter(input_string: &String, model: &String, tags: &String, date_string: &String,) -> String {
     let front_matter = format!("---
 title: {}
 tags:
 - idea
 - inbox
-- {},
+- {}
+{}
 handled: false
 model: {}
 created: {}
----\n\n", &input_string.to_sentence_case(), &model, &model, &date_string);
+---\n\n", &input_string.to_sentence_case(), &model, &tags, &model, &date_string);
 
     front_matter.to_string()
 }
@@ -61,10 +62,10 @@ fn write_note (file_name: &String, content: &String) -> bool {
 }
 pub fn create_note(note: &Note) -> bool {
 
-    let Note { file_name, input_string, model, completion, search_criteria, videos } = &note;
+    let Note { file_name, tags, input_string, model, completion, search_criteria, videos } = &note;
 
     let date_string = get_date();
-    let front_matter = create_front_matter(input_string, model, &date_string);
+    let front_matter = create_front_matter(input_string, model, tags, &date_string);
     let content = create_content(input_string, completion, search_criteria, videos);
     let note = format!("{} {}", &front_matter, &content);
 
