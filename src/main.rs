@@ -59,7 +59,7 @@ async fn main()  {
 
     let input_string = &args[1];
     let prompt = format!("summarise '{}'", &input_string);
-    let file_name = format!("{}/{}.md", cfg.vault_path, to_sentence_case(input_string));
+    let file_name = format!("{}/{}-({}).md", cfg.vault_path, to_sentence_case(input_string), get_date() );
     let completion = run_completion(&prompt, &cfg).await;
     let search_criteria= create_search_criteria(input_string, &cfg).await;
     let videos = search::search_videos(search_criteria.clone()).await;

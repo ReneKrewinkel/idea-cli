@@ -1,17 +1,9 @@
 use std::fs::File;
 use std::io::Write;
-use std::time::SystemTime;
-use chrono::{DateTime, Utc};
 use inflector::Inflector;
 use crate::note::model::Note;
 
-fn get_date() -> String {
-    let d = SystemTime::now();
-    let datetime = DateTime::<Utc>::from(d);
-    let timestamp_str = datetime.format("%Y-%m-%d").to_string();
-    timestamp_str
-}
-
+use crate::env::config::get_date;
 
 fn create_front_matter(input_string: &String, model: &String, date_string: &String,) -> String {
     let front_matter = format!("---
@@ -19,10 +11,11 @@ title: {}
 tags:
 - idea
 - inbox
+- {},
 handled: false
 model: {}
 created: {}
----\n\n", &input_string.to_sentence_case(), &model, &date_string);
+---\n\n", &input_string.to_sentence_case(), &model, &model, &date_string);
 
     front_matter.to_string()
 }
@@ -57,7 +50,7 @@ fn create_content(input_string: &String,
 }
 fn write_note (file_name: &String, content: &String) -> bool {
 
-    let mut file = match File::create(&file_name) {
+    let mut file = match File::create(file_name) {
         Err(why) => panic!("Cannot create file: {}", why),
         Ok(file) => file
     };

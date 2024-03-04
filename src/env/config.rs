@@ -1,8 +1,18 @@
+use std::time::SystemTime;
+use chrono::{DateTime, Utc};
 //use env_file_reader::read_file;
 use dotenv::{ dotenv };
 // use homedir::get_my_home;
 // use std::{ format };
 use super::model::Config;
+
+pub fn get_date() -> String {
+    let d = SystemTime::now();
+    let datetime = DateTime::<Utc>::from(d);
+    let timestamp_str = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+    timestamp_str
+}
+
 
 pub fn read_config() -> Config {
 

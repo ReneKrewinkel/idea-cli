@@ -5,15 +5,14 @@ pub async fn openai_completion(prompt: &String, cfg: &Config) -> String {
 
     set_key(cfg.openai_token.clone());
     let res = Completion::builder(&cfg.openai_model)
-        .prompt(prompt.clone())
+        .prompt(prompt)
         .max_tokens(1024)
         .create()
         .await;
 
-    if let Ok(res) = res {
-        return res.choices.first().unwrap().text.clone().to_string();
+    match res {
+        Ok(c) => { c.choices.first().unwrap().text.clone().to_string() }
+        Err(e) => { e.message.to_string() }
     }
 
-    // let response = &res.choices.first().unwrap().text.clone();
-    "".to_string()
 }

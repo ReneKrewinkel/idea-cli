@@ -7,8 +7,6 @@ use crate::env::model::Config;
 pub async fn ollama_completion(prompt: &String, cfg: &Config) -> String {
 
     let ollama = Ollama::default();
-    let model = cfg.ollama_model.to_string();
-    let prompt = prompt.to_string();
 
     let options = GenerationOptions::default()
         .temperature(0.2)
@@ -17,12 +15,12 @@ pub async fn ollama_completion(prompt: &String, cfg: &Config) -> String {
         .top_p(0.25);
 
     let res = ollama
-        .generate(GenerationRequest::new(model, prompt).options(options))
+        .generate(GenerationRequest::new(cfg.ollama_model.clone(), prompt.clone()).options(options))
         .await;
 
-    if let Ok(res) = res {
-        return res.response.to_string();
+    match res {
+        Ok(c) => { c.response.to_string() }
+        Err(e) => { e }
     }
 
-    "".to_string()
 }
