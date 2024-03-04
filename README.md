@@ -27,7 +27,7 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 - [x] ~~[Better error handling](https://github.com/ReneKrewinkel/idea-cli/issues/1).~~
 - [x] ~~[Check if there are video's if not, don't generate the content](https://github.com/ReneKrewinkel/idea-cli/issues/2)~~
 - [ ] [Use Official youtube library: google-youtube3](https://github.com/ReneKrewinkel/idea-cli/issues/3)
-- [ ] [Integrate in NeoVim (NeoVim plugin!)](https://github.com/ReneKrewinkel/idea-cli/issues/4)
+- [ ] [Integrate in NeoVim (NeoVim plugin!) **FEATURE**](https://github.com/ReneKrewinkel/idea-cli/issues/4)
 - [ ] [Generic config file in](https://github.com/ReneKrewinkel/idea-cli/issues/5) `${HOME}/.config/idea-cli/settings.json`
 - [x] ~~[Option for using Ollama instead of OpenAI](https://github.com/ReneKrewinkel/idea-cli/issues/6)~~
 - [ ] [Write tests](https://github.com/ReneKrewinkel/idea-cli/issues/7)
