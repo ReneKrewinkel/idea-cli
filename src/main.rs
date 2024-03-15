@@ -1,6 +1,5 @@
 extern crate chrono;
 use inflector::cases::sentencecase::to_sentence_case;
-
 mod openai;
 use openai::completion::openai_completion;
 mod ollama;
@@ -12,35 +11,36 @@ use youtube::search;
 mod note;
 use note::create;
 //use note::model::Note;
-use crate::note::model::Note;
+use note::model::Note;
 mod env;
 
 use env::config::*;
-use crate::env::model::Config;
-
+use env::model::Config;
 
 async fn run_completion(prompt: &String, cfg: &Config) -> String {
     if &cfg.use_ollama == "YES" {
         return ollama_completion(prompt, cfg).await;
-    } 
-    
+    }
     openai_completion(prompt, cfg).await
-    
 }
 
-async fn create_tags (input: &String,  cfg: &Config) -> String {
-    if cfg.use_ollama == "YES" {
-        let tag_prompt = format!("create obsidian tags for '{}' displayed on one line, display only the hashtags and without descriptive text, without an intro", &input);
-        //return run_completion(&search_prompt, cfg).await;
-        let data = run_completion(&tag_prompt, cfg).await;
-        let pos = data.find('#');
-        let slice = &data[pos.unwrap_or(0)..];
-        return  slice.replace('#', "\n- ").to_string();
+async fn create_tags(input: &str, cfg: &Config) -> Vec<String> {
+    let tag_prompt = format!("create obsidian tags for '{}' displayed on one line, display only the hashtags and without descriptive text, without an intro", input);
+    let data = run_completion(&tag_prompt, cfg).await;
+
+    if let Some(pos) = data.find('#') {
+        let slice = &data[pos..];
+        let v: Vec<String> = slice
+            .split_whitespace()
+            .filter(|word| word.starts_with('#'))
+            .map(|word| word.to_string())
+            .collect();
+        v
+    } else {
+        Vec::new()
     }
-    // Some weirdness when running openai with return characters (see #9)
-    // work around: just use the input string
-    input.clone()
 }
+
 
 async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
      if cfg.use_ollama == "YES" {
@@ -50,7 +50,6 @@ async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
     // Some weirdness when running openai with return characters (see #9)
     // work around: just use the input string
     input.clone()
-    
 }
 
 fn extract_model(cfg: &Config) -> String {
@@ -62,7 +61,6 @@ fn extract_model(cfg: &Config) -> String {
 
 #[tokio::main]
 async fn main()  {
-
     let cfg = read_config();
     let args: Vec<String> = std::env::args().collect();
 
@@ -82,5 +80,4 @@ async fn main()  {
     let model= extract_model(&cfg);
     let n = Note::new(file_name, tags, input_string.clone(), model, completion, search_criteria, videos);
     let _result = create::create_note(&n);
-
 }
