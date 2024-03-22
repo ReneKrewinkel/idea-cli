@@ -13,15 +13,15 @@ use note::create;
 //use note::model::Note;
 use note::model::Note;
 mod env;
-
 use env::config::*;
-use env::model::Config;
+use env::model::{ Config, UseOllama };
+
 
 async fn run_completion(prompt: &String, cfg: &Config) -> String {
-    if &cfg.use_ollama == "YES" {
-        return ollama_completion(prompt, cfg).await;
+    match &cfg.use_ollama {
+        UseOllama::Yes => ollama_completion(prompt, cfg).await,
+        UseOllama::No => openai_completion(prompt, cfg).await
     }
-    openai_completion(prompt, cfg).await
 }
 
 async fn create_tags(input: &str, cfg: &Config) -> Vec<String> {
@@ -43,20 +43,20 @@ async fn create_tags(input: &str, cfg: &Config) -> Vec<String> {
 
 
 async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
-     if cfg.use_ollama == "YES" {
-        let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input);
-        return run_completion(&search_prompt, cfg).await;
-    } 
-    // Some weirdness when running openai with return characters (see #9)
-    // work around: just use the input string
-    input.clone()
+    match &cfg.use_ollama {
+        UseOllama::Yes => {
+                let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input);
+                run_completion(&search_prompt, cfg).await
+        },
+        UseOllama::No => input.clone()
+    }
 }
 
 fn extract_model(cfg: &Config) -> String {
-    if cfg.use_ollama == "YES" {
-        return cfg.ollama_model.clone();
-    } 
-    cfg.openai_model.clone()
+    match &cfg.use_ollama {
+        UseOllama::Yes => cfg.ollama_model.clone(),
+        UseOllama::No =>  cfg.openai_model.clone()
+    }
 }
 
 #[tokio::main]

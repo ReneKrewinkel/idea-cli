@@ -6,19 +6,29 @@ pub struct Config {
     pub openai_model: String,
     // Let's default this
     //pub ollama_url: String,
-    pub use_ollama: String,
+    pub use_ollama: UseOllama,
     pub ollama_model: String,
     pub youtube_token: String,
 }
+
+#[derive(Debug, Clone)]
+pub enum UseOllama {
+    Yes,
+    No
+}
+
 
 impl Config {
     pub fn new(vault_path: String,
                openai_token: String,
                openai_url: String,
                openai_model: String,
-               use_ollama: String,
+               ollama: String,
                ollama_model: String,
                youtube_token: String) -> Config {
+        
+        let use_ollama: UseOllama = if ollama == "YES" { UseOllama::Yes } else { UseOllama::No };
+        
         Config { vault_path,
                  openai_token, openai_url, openai_model,
                  use_ollama, ollama_model,
