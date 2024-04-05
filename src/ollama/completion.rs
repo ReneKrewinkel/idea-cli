@@ -2,6 +2,7 @@ use ollama_rs::{
     generation::{completion::request::GenerationRequest, options::GenerationOptions},
     Ollama,
 };
+
 use crate::env::model::Config;
 
 pub async fn ollama_completion(prompt: &String, cfg: &Config) -> String {

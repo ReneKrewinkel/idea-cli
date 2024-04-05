@@ -17,12 +17,6 @@ use env::config::*;
 use env::model::{ Config, UseOllama };
 
 
-async fn run_completion(prompt: &String, cfg: &Config) -> String {
-    match &cfg.use_ollama {
-        UseOllama::Yes => ollama_completion(prompt, cfg).await,
-        UseOllama::No => openai_completion(prompt, cfg).await
-    }
-}
 
 async fn create_tags(input: &str, cfg: &Config) -> Vec<String> {
     let tag_prompt = format!("create obsidian tags for '{}' displayed on one line, display only the hashtags and without descriptive text, without an intro", input);
@@ -41,6 +35,12 @@ async fn create_tags(input: &str, cfg: &Config) -> Vec<String> {
     }
 }
 
+async fn run_completion(prompt: &String, cfg: &Config) -> String {
+    match &cfg.use_ollama {
+        UseOllama::Yes => ollama_completion(prompt, cfg).await,
+        UseOllama::No => openai_completion(prompt, cfg).await
+    }
+}
 
 async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
     match &cfg.use_ollama {
@@ -65,7 +65,7 @@ async fn main()  {
     let args: Vec<String> = std::env::args().collect();
 
     if args.len() != 2 {
-        println!("Usage: {} <string>", args[0]);
+        println!("Usage: {} '<string>'", args[0]);
         return;
     }
 

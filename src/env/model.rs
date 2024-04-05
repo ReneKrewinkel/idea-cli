@@ -10,14 +10,11 @@ pub struct Config {
     pub ollama_model: String,
     pub youtube_token: String,
 }
-
 #[derive(Debug, Clone)]
 pub enum UseOllama {
     Yes,
     No
 }
-
-
 impl Config {
     pub fn new(vault_path: String,
                openai_token: String,
@@ -27,7 +24,10 @@ impl Config {
                ollama_model: String,
                youtube_token: String) -> Config {
         
-        let use_ollama: UseOllama = if ollama == "YES" { UseOllama::Yes } else { UseOllama::No };
+        let use_ollama = match ollama.trim().to_uppercase().as_str() {
+            "YES" | "Y" | "TRUE" => UseOllama::Yes,
+            _ => UseOllama::No,
+        };
         
         Config { vault_path,
                  openai_token, openai_url, openai_model,
