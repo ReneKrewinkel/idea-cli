@@ -19,14 +19,14 @@ require('idea-cli')
 
 - idea-cli/init.lua:
 
-````lua
+```lua
 require('idea-cli.idea-cli')
 
 local idea_cli = require('idea-cli.idea-cli')
 vim.api.nvim_create_user_command('IdeaCli', function()
 idea_cli.run()
 end, {})
-
+```
 
 - idea-cli/idea-cli.lua:
 
@@ -62,4 +62,4 @@ end
 
 return M
 ```
-````
+
