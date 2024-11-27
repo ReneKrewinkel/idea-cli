@@ -4,11 +4,11 @@ Required file tree:
 
 ```shell
 ~/.config/nvim/
-├── init.lua
-└── lua/
-    └── idea-cli/
-        ├── init.lua
-        └── idea-cli.lua
+ ├── init.lua
+ └── lua/
+     └── idea-cli/
+         ├── init.lua
+         └── idea-cli.lua
 ```
 
 - init.lua:
@@ -20,11 +20,10 @@ require('idea-cli')
 - idea-cli/init.lua:
 
 ```lua
-require('idea-cli.idea-cli')
-
 local idea_cli = require('idea-cli.idea-cli')
+
 vim.api.nvim_create_user_command('IdeaCli', function()
-idea_cli.run()
+    idea_cli.run()
 end, {})
 ```
 
