@@ -3,7 +3,7 @@
 ![b](https://img.shields.io/badge/rust-orange?style=for-the-badge&logo=rust)
 ![b](https://img.shields.io/badge/Open%20AI-grey?style=for-the-badge&logo=openai)
 ![b](https://img.shields.io/badge/obsidian-purple?style=for-the-badge&logo=obsidian)
-![b](https://img.shields.io/badge/ollama-white?style=for-the-badge&logo=ollama)
+![b](https://img.shields.io/badge/ollama-yellow?style=for-the-badge&logo=ollama)
 
 > **UPDATE** Added Ollama Support!
 
