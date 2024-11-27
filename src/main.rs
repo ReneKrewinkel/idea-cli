@@ -42,7 +42,7 @@ async fn run_completion(prompt: &String, cfg: &Config) -> String {
     }
 }
 
-async fn create_search_criteria(input: &String,  cfg: &Config) -> String {
+async fn create_search_criteria(input: String, cfg: &Config) -> String {
     match &cfg.use_ollama {
         UseOllama::Yes => {
                 let search_prompt = format!("create a search argument for the following sentence '{}' no explanation just 1 sentence, omit  bullet points with a maximum of 5 words remove all unnecessary characters", &input);
@@ -63,7 +63,7 @@ fn extract_model(cfg: &Config) -> String {
 async fn main()  {
     let cfg = read_config();
     let args: Vec<String> = std::env::args().collect();
-
+    
     if args.len() != 2 {
         println!("Usage: {} 'sentence with information to research'", args[0]);
         return;
@@ -74,10 +74,10 @@ async fn main()  {
     // Find new thing for uniqueness
     let file_name = format!("{}/{}-({}).md", cfg.vault_path, to_sentence_case(input_string), get_date() );
     let completion = run_completion(&prompt, &cfg).await;
-    let search_criteria= create_search_criteria(input_string, &cfg).await;
+    let search_criteria= create_search_criteria(input_string.to_string(), &cfg).await;
     let tags = create_tags(input_string, &cfg).await;
-    let videos = search::search_videos(search_criteria.clone()).await;
+    let videos = search::search_videos(prompt.clone()).await;
     let model= extract_model(&cfg);
-    let n = Note::new(file_name, tags, input_string.clone(), model, completion, search_criteria, videos);
-    let _result = create::create_note(&n);
+    let n = Note::new(file_name, tags, input_string.to_string(), model, completion, search_criteria, videos);
+    let _ = create::create_note(&n);
 }

@@ -3,7 +3,8 @@ use rusty_ytdl::search::{SearchResult, YouTube};
 
 fn strip_words(input: &String) -> String {
 
-    let output =  input.replace(" in ", " ")
+    //let output =  
+        input.replace(" in ", " ")
         .replace(" the ", " ")
         .replace(" from ", " ")
         .replace(" of ",  " ")
@@ -13,9 +14,9 @@ fn strip_words(input: &String) -> String {
         .replace("i like ", " ")
         .replace("research ", " ")
         .replace("idea ", " ")
-        .replace( "  ", " ").clone();
+        .replace( "  ", " ").clone()
 
-    output
+    //output
 
 }
 
@@ -27,10 +28,7 @@ pub(crate) async fn search_videos(search: String) -> Vec<String> {
     let mut urls = Vec::new();
 
     for result in res.unwrap() {
-        match result {
-            SearchResult::Video(v) => { urls.push( v.get_embed_url().unwrap().to_string() ) }
-            _ => {}
-        }
+        if let SearchResult::Video(v) = result { urls.push( v.get_embed_url().unwrap().to_string() ) }
     }
 
     urls

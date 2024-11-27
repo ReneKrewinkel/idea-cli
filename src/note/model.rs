@@ -15,7 +15,7 @@ pub struct Note {
 
 impl Note { 
     pub fn new(file_name: String,
-               tags: Vec<String>, 
+               tags: Vec<String>,
                input_string: String,
                model: String,
                completion: String,
