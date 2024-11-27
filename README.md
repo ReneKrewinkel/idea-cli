@@ -48,3 +48,47 @@ cargo build --target=aarch64-apple-darwin --release
 ```shell
 cargo build --target x86_64-pc-windows-gnu
 ```
+
+```mermaid
+classDiagram
+    class Config {
+        +String ollama_model
+    }
+
+    class GenerationOptions {
+        +GenerationOptions default()
+        +GenerationOptions temperature(float)
+        +GenerationOptions repeat_penalty(float)
+        +GenerationOptions top_k(int)
+        +GenerationOptions top_p(float)
+    }
+
+    class GenerationRequest {
+        +GenerationRequest new(String model, String prompt)
+        +GenerationRequest options(GenerationOptions options)
+    }
+
+    class Ollama {
+        +Ollama default()
+        +generate(GenerationRequest request) : Result
+    }
+
+    class Result {
+        +String response
+    }
+
+    class Error {
+        +String to_string()
+    }
+
+    class Completion {
+        +ollama_completion(String prompt, Config cfg) : String
+    }
+
+    Config --> Completion : uses
+    GenerationOptions --> GenerationRequest : uses
+    GenerationRequest --> Ollama : uses
+    Ollama --> Result : returns
+    Result --> Completion : returns
+    Error --> Completion : returns
+```
