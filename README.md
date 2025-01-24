@@ -37,6 +37,7 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 - [x] ~~[Make sure not to overwrite a file](https://github.com/ReneKrewinkel/idea-cli/issues/11)~~
 - [x] ~~[Add tags based upon input](https://github.com/ReneKrewinkel/idea-cli/issues/12)~~
 - [x] ~~[Write neovim plugin](https://github.com/ReneKrewinkel/idea-cli/issues/13)~~
+- [ ] [Convert returns to `Result<T,E>`](https://github.com/ReneKrewinkel/idea-cli/issues/14)
  
 ## Build
 #### MacOS
