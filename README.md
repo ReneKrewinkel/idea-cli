@@ -49,6 +49,10 @@ cargo build --target=aarch64-apple-darwin --release
 ```shell
 cargo build --target x86_64-pc-windows-gnu
 ```
+## NeoVim plugin
+
+Check out the [Neovim plugin](./neovim-plugin/)
+<img src='./neovim-plugin/neovim-plugin.png'>
 
 ```mermaid
 classDiagram
