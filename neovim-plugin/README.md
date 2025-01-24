@@ -32,10 +32,6 @@ end, {})
 ```lua
 local M = {}
 
-function M.msg(type, msg, title)
-  require('notify')(msg, type, { title = title, timeout = 4000 })
-end
-
 function M.run(opts)
   opts = opts or {}
   local title = 'Idea CLI'
@@ -46,19 +42,23 @@ function M.run(opts)
   end
 
   local cmd = "idea '" .. idea_string .. "'"
-  M.msg('info', 'Executing: ' .. cmd, title)
+  vim.notify('Executing: ' .. cmd, 'info', { title = title })
 
   vim.fn.jobstart(cmd, {
-    on_exit = function(_, code)
+    on_exit = function(result, code)
       if code == 0 then
-        M.msg('success', 'Idea CLI ran successfully, check the ouput in Obsidian', title)
+      -- TODO: find a way to catch the file name it created and 
+      -- open this in a new buffer
+        -- vim.cmd('e' .. result)
+        vim.notify('Check result in Obsidian', 'succes', { title = title })
       else
-        M.msg('error', 'Idea CLI failed', title)
+        vim.notify('Idea CLI failed', 'error', { title = title })
       end
     end
   })
 end
 
 return M
+
 ```
 

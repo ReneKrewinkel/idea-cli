@@ -33,7 +33,6 @@ YOUTUBE_TOKEN=youtube-token-not-used-yet
 - [ ] [Write tests](https://github.com/ReneKrewinkel/idea-cli/issues/7)
 - [x] ~~[fix the `unwrap` in the completion](https://github.com/ReneKrewinkel/idea-cli/issues/8)~~
 - [ ] [Strange behaviour in the return of the completion. somehow the string isn't trimmed properly returns a `\\u0000-\\u001F`](https://github.com/ReneKrewinkel/idea-cli/issues/9)
-- [ ] **Idea:** Spawn a thread to run it in the background?
 - [x] ~~[***Optimize code!!!!!***](https://github.com/ReneKrewinkel/idea-cli/issues/10)~~
 - [x] ~~[Make sure not to overwrite a file](https://github.com/ReneKrewinkel/idea-cli/issues/11)~~
 - [x] ~~[Add tags based upon input](https://github.com/ReneKrewinkel/idea-cli/issues/12)~~
