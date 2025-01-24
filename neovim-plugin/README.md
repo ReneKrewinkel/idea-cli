@@ -1,5 +1,7 @@
 # Neovim user command for running `idea` command
 
+<img src='./neovim-plugin.png'>
+
 Required file tree:
 
 ```shell
